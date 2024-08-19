@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">ComposeDisney</string>
+    <string name="app_name">Disney_characters</string>
+    <string name="back_button">back</string>
+    <string name="films">Films</string>
+    <string name="park_attractions">Park attractions</string>
+    <string name="short_films">Short films</string>
+    <string name="tv_shows">TV shows</string>
+    <string name="video_games">Video games</string>
+    <string name="image">image</string>
 </resources>
