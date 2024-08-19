@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp") version "1.9.10-1.0.13"
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -70,6 +72,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     implementation("com.google.dagger:hilt-android:2.49")
+    implementation("com.google.firebase:firebase-crashlytics:19.0.3")
     ksp("com.google.dagger:hilt-android-compiler:2.49")
 
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
