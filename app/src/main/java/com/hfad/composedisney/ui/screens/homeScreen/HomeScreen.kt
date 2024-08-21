@@ -14,7 +14,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -37,7 +37,7 @@ fun HomeScreen(
     navHostController: NavHostController,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state.observeAsState()
+    val state = viewModel.state.collectAsState()
     viewModel.processAction(HomeAction.Init)
 
     Scaffold(
@@ -50,7 +50,7 @@ fun HomeScreen(
             ) {
                 LazyVerticalGrid(columns = GridCells.Fixed(GREED)) {
                     items(
-                        items = state.value?.disneyHeroes ?: arrayListOf()
+                        items = state.value.disneyHeroes
                     ) { item ->
                         Column(
                             modifier = Modifier

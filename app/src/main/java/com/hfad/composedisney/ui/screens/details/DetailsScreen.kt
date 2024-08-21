@@ -20,7 +20,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,7 +45,7 @@ fun DetailsScreen(
     id: Int,
     viewModel: DetailsViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state.observeAsState()
+    val state = viewModel.state.collectAsState()
     viewModel.processAction(DetailsAction.Init(id))
 
     Scaffold(
@@ -65,7 +65,7 @@ fun DetailsScreen(
                             .background(VioletL)
                     ) {
                         AsyncImage(
-                            model = state.value?.hero?.image,
+                            model = state.value.hero?.image,
                             contentDescription = stringResource(id = R.string.image),
                             modifier = Modifier
                                 .align(Alignment.Center)
@@ -84,7 +84,7 @@ fun DetailsScreen(
                         }
                     }
                     Text(
-                        text = state.value?.hero?.name
+                        text = state.value.hero?.name
                             ?: "",
                         fontSize = 30.sp,
                         color = Color.White,
@@ -94,7 +94,7 @@ fun DetailsScreen(
                     )
                     LazyColumn(contentPadding = PaddingValues(10.dp)) {
                         items(
-                            items = state.value?.hero?.fields ?: arrayListOf()
+                            items = state.value.hero?.fields ?: arrayListOf()
                         ) { itemField ->
                             Column(
                                 modifier = Modifier

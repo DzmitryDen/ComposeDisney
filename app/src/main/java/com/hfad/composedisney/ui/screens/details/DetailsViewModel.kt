@@ -1,23 +1,22 @@
 package com.hfad.composedisney.ui.screens.details
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hfad.composedisney.repository.DisneyRepository
 import com.hfad.composedisney.ui.screens.details.domain.DetailsAction
 import com.hfad.composedisney.ui.screens.details.domain.DetailsState
-import com.example.compose_disney_characters.utils.toDisneyHero
+import com.hfad.composedisney.ui.screens.details.domain.HeroResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-    private val repository: DisneyRepository
+    private val useCase: LoadHeroByIdUseCase
 ) : ViewModel() {
 
-    val state = MutableLiveData(DetailsState())
+    val state = MutableStateFlow(DetailsState())
 
     fun processAction(action: DetailsAction) {
         when (action) {
@@ -27,12 +26,21 @@ class DetailsViewModel @Inject constructor(
 
     private fun loadHeroById(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = repository.getHeroById(id)
-            if (response.isSuccessful) {
-                response.body()?.toDisneyHero().let {
-                    state.postValue(it?.let { disneyHero -> state.value?.copy(hero = disneyHero) })
-                }
+            useCase.loadHero(id).collect { result ->
+                handleResult(result)
             }
+        }
+    }
+
+    private fun handleResult(result: HeroResult) {
+        when (result) {
+            is HeroResult.Success -> state.tryEmit(
+                state.value.copy(
+                    hero = result.result,
+                )
+            )
+
+            is HeroResult.Error -> {}
         }
     }
 }
